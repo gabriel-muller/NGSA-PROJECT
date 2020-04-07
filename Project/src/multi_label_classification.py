@@ -11,6 +11,8 @@ import seaborn as sns
 
 import numpy as np
 import json
+import pickle
+import re
 
 import sklearn
 from sklearn.datasets import make_multilabel_classification
@@ -141,14 +143,20 @@ def compare_embeddings(embeddings, y, model, gridsearch=False, params=None, full
     
     return results_train, results_test
 
+def clean_type(model):
+    regex = re.compile("[^a-zA-Z]+")
+    name = str(type(model)).split('.')[-1]
+    name = regex.sub('', name)
+    return name
+
 
 #%%Main
 
 ### Loading data
-path = '..\data'
-data_HR = load_data(path,'\HR_genres.json')
-data_HU = load_data(path,'\HU_genres.json')
-data_RO = load_data(path,'\RO_genres.json')
+path = '../data'
+data_HR = load_data(path,'/HR_genres.json')
+data_HU = load_data(path,'/HU_genres.json')
+data_RO = load_data(path,'/RO_genres.json')
 
 #get all genres
 genres = []
@@ -163,23 +171,28 @@ genres.sort()
 columns = ['Id'] + genres
 
 #Country
-country = ['HR','HU','RO']
+country = ['HR']#,'HU','RO']
 
-### Loading features
-X_HR = pd.read_csv('../data/deezer_HR_embedding.csv')
-# X_HU = pd.read_csv('../data/deezer_HU_embedding.csv')
-# X_RO = pd.read_csv('../data/deezer_RO_embedding.csv')
+### Loading GEMSEC features
+embed_path = '../embeddings/'
+X_HR_GEMSEC = pd.read_csv(embed_path+'deezer_HR_GEMSEC_embeddings.csv')
+# X_HU_GEMSEC = pd.read_csv(embed_path+'deezer_HU_GEMSEC_embedding.csv')
+# X_RO_GEMSEC = pd.read_csv(embed_path+'deezer_RO_GEMSEC_embedding.csv')
+
+### Loading Node2vec features
+X_HR_n2v = pd.read_csv(embed_path+'deezer_HR_node2vec_embeddings.csv')
+# X_HU_n2v = pd.read_csv(embed_path+'deezer_HU_node2vec_embedding.csv')
+# X_RO_n2v = pd.read_csv(embed_path+'deezer_RO_node2vec_embedding.csv')
 
 ### Loading labels 
 y_HR = create_dataframe_unsorted(data_HR, columns)
-y_HU = create_dataframe_unsorted(data_HU, columns)
-y_RO = create_dataframe_unsorted(data_RO, columns)
-list_target = [y_HR, y_HU, y_RO]
+# y_HU = create_dataframe_unsorted(data_HU, columns)
+# y_RO = create_dataframe_unsorted(data_RO, columns)
+list_target = [y_HR]#, y_HU, y_RO]
 
 ### Initalizing the parameters for the models comparison
 
-# TO BE OBTAINED FROM LULU >> DICTIONNARY OF VARIOUSTYPES OF EMBEDDINGS FOR THE SOURCES
-embeddings_HR = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
+embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'Node2Vec': X_HR_n2v}
 # embeddings_HU = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
 # embeddings_RO = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
 list_embed = [embeddings_HR] #, embeddings_HU, embeddings_RO]
@@ -206,9 +219,9 @@ list_params = [params_cc_lg, params_cc_xbg, params_ovr_lg, params_ovr_xgb]
 models_params = list(zip(list_models, list_params))
 
 # Other important parameters
-gridsearch = True
+gridsearch = False
 full_train = False
-most_popular = 10
+most_popular = 30
 
 # All 4 models to be compared
 
@@ -220,19 +233,25 @@ def run(list_data, model_params, gridsearch, full_train, most_popular, filename=
         cntry = country[i]
         i += 1
         for model, param in models_params:
-            meta_model = type(model)
+            meta_model = clean_type(model)
             try:
-                weak_model = type(model.estimator)
+                weak_model = clean_type(model.estimator)
             except AttributeError as err:
-                weak_model = type(model.base_estimator)
+                weak_model = clean_type(model.base_estimator)
                 
+            print('##### Country: ' + cntry + ' | Meta model: ' + meta_model + ' | Weak model: ' + weak_model + ' #####')
             r_train, r_test = compare_embeddings(embeddings=X, y=y, model=model, 
                                      gridsearch=gridsearch, params=param, full_train=full_train,
                                      most_popular=most_popular)
+            print('')
 
             results_train[(cntry, meta_model, weak_model)] = r_train
             results_test[(cntry, meta_model, weak_model)] = r_test
-    # TODO SAVE
+    
+    #save the results
+    pickle.dump(results_train, open('../outputs/train.pkl', 'wb'))
+    pickle.dump(results_test, open('../outputs/test.pkl', 'wb'))
+    
     return results_test, results_train
 
 r_train, r_test = run(list_data=embed_y, model_params=models_params, gridsearch=gridsearch, 
