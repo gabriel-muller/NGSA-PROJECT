@@ -175,14 +175,29 @@ country = ['HR']#,'HU','RO']
 
 ### Loading GEMSEC features
 embed_path = '../embeddings/'
-X_HR_GEMSEC = pd.read_csv(embed_path+'deezer_HR_GEMSEC_embeddings.csv')
-# X_HU_GEMSEC = pd.read_csv(embed_path+'deezer_HU_GEMSEC_embedding.csv')
-# X_RO_GEMSEC = pd.read_csv(embed_path+'deezer_RO_GEMSEC_embedding.csv')
+X_HR_GEMSEC = pd.read_csv(embed_path+'HR_GEMSEC_embedding.csv')
+# X_HU_GEMSEC = pd.read_csv(embed_path+'HU_GEMSEC_embedding.csv')
+# X_RO_GEMSEC = pd.read_csv(embed_path+'RO_GEMSEC_embedding.csv')
+
+### Loading GEMSEC With Regularization features
+X_HR_GEMSECWithRegul = pd.read_csv(embed_path+'HR_GEMSECWithRegularization_embedding.csv')
+# X_HU_GEMSECWithRegul = pd.read_csv(embed_path+'HU_GEMSECWithRegularization_embedding.csv')
+# X_RO_GEMSECWithRegul = pd.read_csv(embed_path+'RO_GEMSECWithRegularization_embedding.csv')
+
+### Loading DeepWalk features
+X_HR_DeepWalk = pd.read_csv(embed_path+'HR_DeepWalk_embedding.csv')
+# X_HU_DeepWalk = pd.read_csv(embed_path+'HU_DeepWalk_embedding.csv')
+# X_RO_DeepWalk = pd.read_csv(embed_path+'RO_DeepWalk_embedding.csv')
+
+### Loading DeepWalk With Regularization features
+X_HR_DeepWalkWithRegularization = pd.read_csv(embed_path+'HR_DeepWalkWithRegularization_embedding.csv')
+# X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegularization_embedding.csv')
+# X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_DeepWalkWithRegularization_embedding.csv')
 
 ### Loading Node2vec features
-X_HR_n2v = pd.read_csv(embed_path+'deezer_HR_node2vec_embeddings.csv')
-# X_HU_n2v = pd.read_csv(embed_path+'deezer_HU_node2vec_embedding.csv')
-# X_RO_n2v = pd.read_csv(embed_path+'deezer_RO_node2vec_embedding.csv')
+X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
+# X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
+# X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
 
 ### Loading labels 
 y_HR = create_dataframe_unsorted(data_HR, columns)
@@ -192,14 +207,16 @@ list_target = [y_HR]#, y_HU, y_RO]
 
 ### Initalizing the parameters for the models comparison
 
-embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'Node2Vec': X_HR_n2v}
+embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
+                 'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization,
+                 'Node2Vec': X_HR_n2v}
 # embeddings_HU = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
 # embeddings_RO = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
 list_embed = [embeddings_HR] #, embeddings_HU, embeddings_RO]
 
 embed_y = list(zip(list_embed, list_target))
 
-# Model used for the classification (4 combinaisons choisies)
+### Model used for the classification (4 combinaisons choisies)
 weak_model_lg = LogisticRegression(n_jobs=-1)
 weak_model_xgb = xgb.XGBClassifier()
 
@@ -223,8 +240,6 @@ gridsearch = False
 full_train = False
 most_popular = 40
 
-# All 4 models to be compared
-
 def run(list_data, model_params, gridsearch, full_train, most_popular, filename=None):
     results_train = dict()
     results_test = dict()
@@ -236,7 +251,7 @@ def run(list_data, model_params, gridsearch, full_train, most_popular, filename=
             meta_model = clean_type(model)
             try:
                 weak_model = clean_type(model.estimator)
-            except AttributeError as err:
+            except AttributeError:
                 weak_model = clean_type(model.base_estimator)
                 
             print('##### Country: ' + cntry + ' | Meta model: ' + meta_model + ' | Weak model: ' + weak_model + ' #####')
