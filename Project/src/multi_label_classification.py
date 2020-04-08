@@ -221,7 +221,7 @@ models_params = list(zip(list_models, list_params))
 # Other important parameters
 gridsearch = False
 full_train = False
-most_popular = 30
+most_popular = 40
 
 # All 4 models to be compared
 
