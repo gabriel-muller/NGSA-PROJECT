@@ -195,9 +195,14 @@ X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegular
 X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_embedding_DWR.csv')
 
 ### Loading Node2vec features
-# X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
-# X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
-# X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
+X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
+X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
+X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
+
+### Loading Walklets features
+X_HR_Walklets = pd.DataFrame(np.load(open(embed_path+'HR_Walklets_embedding.csv', 'rb')))
+X_HU_Walklets = pd.DataFrame(np.load(open(embed_path+'HU_Walklets_embedding.csv', 'rb')))
+X_RO_Walklets = pd.DataFrame(np.load(open(embed_path+'RO_Walklets_embedding.csv', 'rb')))
 
 ### Loading labels 
 y_HR = create_dataframe_unsorted(data_HR, columns)
@@ -208,11 +213,11 @@ list_target = [y_HR, y_HU, y_RO]
 ### Initalizing the parameters for the models comparison
 
 embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
-                 'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization} #, 'Node2Vec': X_HR_n2v}
+                 'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization} #, 'Node2Vec': X_HR_n2v, 'Walklets': X_HR_Walklets}
 embeddings_HU = {'GEMSEC': X_HU_GEMSEC, 'GEMSEC With Regularization': X_HU_GEMSECWithRegul,
-                 'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization} #, 'Node2Vec': X_HU_n2v}
+                 'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization} #, 'Node2Vec': X_HU_n2v, 'Walklets': X_HU_Walklets}
 embeddings_RO = {'GEMSEC': X_RO_GEMSEC, 'GEMSEC With Regularization': X_RO_GEMSECWithRegul,
-                 'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization} #, 'Node2Vec': X_RO_n2v}
+                 'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization} #, 'Node2Vec': X_RO_n2v, 'Walklets': X_RO_Walklets}
 list_embed = [embeddings_HR, embeddings_HU, embeddings_RO]
 
 embed_y = list(zip(list_embed, list_target))
