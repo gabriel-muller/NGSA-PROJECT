@@ -171,48 +171,49 @@ genres.sort()
 columns = ['Id'] + genres
 
 #Country
-country = ['HR']#,'HU','RO']
+country = ['HR','HU','RO']
 
 ### Loading GEMSEC features
 embed_path = '../embeddings/'
 X_HR_GEMSEC = pd.read_csv(embed_path+'HR_GEMSEC_embedding.csv')
-# X_HU_GEMSEC = pd.read_csv(embed_path+'HU_GEMSEC_embedding.csv')
-# X_RO_GEMSEC = pd.read_csv(embed_path+'RO_GEMSEC_embedding.csv')
+X_HU_GEMSEC = pd.read_csv(embed_path+'HU_GEMSEC_embedding.csv')
+X_RO_GEMSEC = pd.read_csv(embed_path+'RO_embedding_GEMSEC.csv')
 
 ### Loading GEMSEC With Regularization features
 X_HR_GEMSECWithRegul = pd.read_csv(embed_path+'HR_GEMSECWithRegularization_embedding.csv')
-# X_HU_GEMSECWithRegul = pd.read_csv(embed_path+'HU_GEMSECWithRegularization_embedding.csv')
-# X_RO_GEMSECWithRegul = pd.read_csv(embed_path+'RO_GEMSECWithRegularization_embedding.csv')
+X_HU_GEMSECWithRegul = pd.read_csv(embed_path+'HU_GEMSECWithRegularization_embedding.csv')
+X_RO_GEMSECWithRegul = pd.read_csv(embed_path+'RO_GEMSECWithRegularization_embedding.csv')
 
 ### Loading DeepWalk features
 X_HR_DeepWalk = pd.read_csv(embed_path+'HR_DeepWalk_embedding.csv')
-# X_HU_DeepWalk = pd.read_csv(embed_path+'HU_DeepWalk_embedding.csv')
-# X_RO_DeepWalk = pd.read_csv(embed_path+'RO_DeepWalk_embedding.csv')
+X_HU_DeepWalk = pd.read_csv(embed_path+'HU_DeepWalk_embedding.csv')
+X_RO_DeepWalk = pd.read_csv(embed_path+'RO_embedding_DW.csv')
 
 ### Loading DeepWalk With Regularization features
 X_HR_DeepWalkWithRegularization = pd.read_csv(embed_path+'HR_DeepWalkWithRegularization_embedding.csv')
-# X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegularization_embedding.csv')
-# X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_DeepWalkWithRegularization_embedding.csv')
+X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegularization_embedding.csv')
+X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_embedding_DWR.csv')
 
 ### Loading Node2vec features
-X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
+# X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
 # X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
 # X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
 
 ### Loading labels 
 y_HR = create_dataframe_unsorted(data_HR, columns)
-# y_HU = create_dataframe_unsorted(data_HU, columns)
-# y_RO = create_dataframe_unsorted(data_RO, columns)
-list_target = [y_HR]#, y_HU, y_RO]
+y_HU = create_dataframe_unsorted(data_HU, columns)
+y_RO = create_dataframe_unsorted(data_RO, columns)
+list_target = [y_HR, y_HU, y_RO]
 
 ### Initalizing the parameters for the models comparison
 
 embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
-                 'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization,
-                 'Node2Vec': X_HR_n2v}
-# embeddings_HU = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
-# embeddings_RO = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
-list_embed = [embeddings_HR] #, embeddings_HU, embeddings_RO]
+                 'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization} #, 'Node2Vec': X_HR_n2v}
+embeddings_HU = {'GEMSEC': X_HU_GEMSEC, 'GEMSEC With Regularization': X_HU_GEMSECWithRegul,
+                 'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization} #, 'Node2Vec': X_HU_n2v}
+embeddings_RO = {'GEMSEC': X_RO_GEMSEC, 'GEMSEC With Regularization': X_RO_GEMSECWithRegul,
+                 'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization} #, 'Node2Vec': X_RO_n2v}
+list_embed = [embeddings_HR, embeddings_HU, embeddings_RO]
 
 embed_y = list(zip(list_embed, list_target))
 
