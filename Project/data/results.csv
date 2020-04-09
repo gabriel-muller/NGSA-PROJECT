@@ -1,0 +1,31 @@
+﻿dataset,algorithm,type,time,nb_clusters,modularity
+Deezer - Hungary,Fast Greedy,weighted,19,46,0.784
+Deezer - Hungary,Walktrap,weighted,205,1241,0.702
+Deezer - Hungary,Spectral Clustering,weighted,16,5,0.053
+Deezer - Hungary,Label propagation,weighted,1,7394,0.57
+Deezer - Hungary,Louvain,weighted,2,38,0.783
+Deezer - Hungary,Fast Greedy,unweighted,157,81,0.583
+Deezer - Hungary,Walktrap,unweighted,224,910,0.582
+Deezer - Hungary,Spectral Clustering,unweighted,13,4,0.161
+Deezer - Hungary,Label propagation,unweighted,9,26,0.063
+Deezer - Hungary,Louvain,unweighted,4,25,0.679
+Deezer - Romania,Fast Greedy,weighted,5,113,0.831
+Deezer - Romania,Walktrap,weighted,79,2150,0.74
+Deezer - Romania,Spectral Clustering,weighted,2,1,0
+Deezer - Romania,Label propagation,weighted,2,8803,0.604
+Deezer - Romania,Louvain,weighted,1,77,0.831
+Deezer - Romania,Fast Greedy,unweighted,40,162,0.698
+Deezer - Romania,Walktrap,unweighted,80,2554,0.641
+Deezer - Romania,Spectral Clustering,unweighted,34,18,0.398
+Deezer - Romania,Label propagation,unweighted,4,667,0.684
+Deezer - Romania,Louvain,unweighted,2,45,0.754
+Deezer - Croatia,Fast Greedy,weighted,45,64,0.831
+Deezer - Croatia,Walktrap,weighted,728,1263,0.797
+Deezer - Croatia,Spectral Clustering,weighted,9,1,0
+Deezer - Croatia,Label propagation,weighted,6,3060,0.716
+Deezer - Croatia,Louvain,weighted,6,57,0.839
+Deezer - Croatia,Fast Greedy,unweighted,290,147,0.579
+Deezer - Croatia,Walktrap,unweighted,720,1073,0.694
+Deezer - Croatia,Spectral Clustering,unweighted,98,21,0.462
+Deezer - Croatia,Label propagation,unweighted,10,118,0.707
+Deezer - Croatia,Louvain,unweighted,4,26,0.74
