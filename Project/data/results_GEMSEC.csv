@@ -1,0 +1,22 @@
+﻿Algorithm,DW,nb_clusters,Dataset utilisé,time,Modularity
+GEMSEC + Reg.,1,20,TV show,2,0.839
+GEMSEC + Reg.,1,20,Deezer - Croatia,150,0.407
+GEMSEC,1,20,Deezer - Croatia,200,0.354
+DeepWalk + Reg.,1,20,Deezer - Croatia,80,0.287
+DeepWalk,1,20,Deezer - Croatia,80,0.235
+GEMSEC + Reg.,1,20,Deezer - Hungary,150,0.409
+GEMSEC,1,20,Deezer - Hungary,150,0.351
+DeepWalk + Reg.,1,20,Deezer - Hungary,150,0.292
+DeepWalk,1,20,Deezer - Hungary,150,0.275
+GEMSEC + Reg.,1,20,Deezer - Romania,100,0.549
+GEMSEC,1,20,Deezer - Romania,100,0.543
+DeepWalk + Reg.,1,20,Deezer - Romania,100,0.484
+DeepWalk,1,20,Deezer - Romania,100,0.468
+GEMSEC,2,20,Deezer - Romania,105,0.536
+DeepWalk + Reg.,2,20,Deezer - Romania,100,0.481
+GEMSEC + Reg.,2,20,Deezer - Romania,100,0.519
+GEMSEC + Reg.,2,50,Deezer - Romania,160,0.582
+GEMSEC + Reg.,2,60,Company,25,0.492
+GEMSEC + Reg.,2,40,Public figures,15,0.412
+GEMSEC + Reg.,2,20,Company,8,0.689
+GEMSEC + Reg.,2,20,Public figures,15,0.415
