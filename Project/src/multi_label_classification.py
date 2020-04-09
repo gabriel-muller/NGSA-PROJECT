@@ -123,6 +123,8 @@ def compare_embeddings(embeddings, y, model, gridsearch=False, params=None, full
     
     i = 0
     for name, embed in embeddings.items():
+        print('#### ' + name + ' ####')
+        model = sklearn.base.clone(model)
         model, f1_train, f1_test = train(model=model, X=embed, y=y, gridsearch=gridsearch, 
                                 params=params, full_train=full_train, most_popular=most_popular)
         if i == 0:
@@ -204,6 +206,11 @@ X_HR_LapEig = pd.DataFrame(np.load(open(embed_path+'HR_LaplacianEigenmaps_embedd
 X_HU_LapEig = pd.DataFrame(np.load(open(embed_path+'HU_LaplacianEigenmaps_embedding.npy', 'rb')))
 X_RO_LapEig = pd.DataFrame(np.load(open(embed_path+'RO_LaplacianEigenmaps_embedding.npy', 'rb')))
 
+### Loading MNMF features
+X_HR_MNMF = pd.DataFrame(np.load(open(embed_path+'HR_MNMF_embedding.npy', 'rb')))
+X_HU_MNMF = pd.DataFrame(np.load(open(embed_path+'HU_MNMF_embedding.npy', 'rb')))
+X_RO_MNMF = pd.DataFrame(np.load(open(embed_path+'RO_MNMF_embedding.npy', 'rb')))
+
 ### Loading Walklets features -> Give 64 dimensions for the embeddings OUT
 # X_HR_Walklets = pd.DataFrame(np.load(open(embed_path+'HR_Walklets_embedding.npy', 'rb')))
 # X_HU_Walklets = pd.DataFrame(np.load(open(embed_path+'HU_Walklets_embedding.npy', 'rb')))
@@ -224,15 +231,15 @@ list_target = [y_HR, y_HU, y_RO]
 
 embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
                  'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization,
-                 'Node2Vec': X_HR_n2v, 'Laplacian_Eigenmaps': X_HR_LapEig,
+                 'Node2Vec': X_HR_n2v, 'Laplacian_Eigenmaps': X_HR_LapEig, 'MNMF': X_HR_MNMF,
                  'DANMF': X_HR_DANMF}
 embeddings_HU = {'GEMSEC': X_HU_GEMSEC, 'GEMSEC With Regularization': X_HU_GEMSECWithRegul,
                  'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization,
-                 'Node2Vec': X_HU_n2v, 'Laplacian_Eigenmaps': X_HU_LapEig,
+                 'Node2Vec': X_HU_n2v, 'Laplacian_Eigenmaps': X_HU_LapEig, 'MNMF': X_HU_MNMF,
                  'DANMF': X_HU_DANMF}
 embeddings_RO = {'GEMSEC': X_RO_GEMSEC, 'GEMSEC With Regularization': X_RO_GEMSECWithRegul,
                  'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization,
-                 'Node2Vec': X_RO_n2v, 'Laplacian_Eigenmaps': X_RO_LapEig,
+                 'Node2Vec': X_RO_n2v, 'Laplacian_Eigenmaps': X_RO_LapEig, 'MNMF': X_RO_MNMF,
                  'DANMF': X_RO_DANMF}
 list_embed = [embeddings_HR, embeddings_HU, embeddings_RO]
 
@@ -271,14 +278,15 @@ def run(list_data, model_params, gridsearch, full_train, most_popular, filename=
         cntry = country[i]
         i += 1
         for model, param in models_params:
-            meta_model = clean_type(model)
+            mdl = sklearn.base.clone(model)
+            meta_model = clean_type(mdl)
             try:
-                weak_model = clean_type(model.estimator)
+                weak_model = clean_type(mdl.estimator)
             except AttributeError:
-                weak_model = clean_type(model.base_estimator)
+                weak_model = clean_type(mdl.base_estimator)
                 
             print('##### Country: ' + cntry + ' | Meta model: ' + meta_model + ' | Weak model: ' + weak_model + ' #####')
-            r_train, r_test = compare_embeddings(embeddings=X, y=y, model=model, 
+            r_train, r_test = compare_embeddings(embeddings=X, y=y, model=mdl, 
                                      gridsearch=gridsearch, params=param, full_train=full_train,
                                      most_popular=most_popular)
             print('')
