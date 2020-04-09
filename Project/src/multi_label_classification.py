@@ -123,6 +123,8 @@ def compare_embeddings(embeddings, y, model, gridsearch=False, params=None, full
     
     i = 0
     for name, embed in embeddings.items():
+        print('#### ' + name + ' ####')
+        model = sklearn.base.clone(model)
         model, f1_train, f1_test = train(model=model, X=embed, y=y, gridsearch=gridsearch, 
                                 params=params, full_train=full_train, most_popular=most_popular)
         if i == 0:
@@ -171,48 +173,75 @@ genres.sort()
 columns = ['Id'] + genres
 
 #Country
-country = ['HR']#,'HU','RO']
+country = ['HR','HU','RO']
 
 ### Loading GEMSEC features
 embed_path = '../embeddings/'
 X_HR_GEMSEC = pd.read_csv(embed_path+'HR_GEMSEC_embedding.csv')
-# X_HU_GEMSEC = pd.read_csv(embed_path+'HU_GEMSEC_embedding.csv')
-# X_RO_GEMSEC = pd.read_csv(embed_path+'RO_GEMSEC_embedding.csv')
+X_HU_GEMSEC = pd.read_csv(embed_path+'HU_GEMSEC_embedding.csv')
+X_RO_GEMSEC = pd.read_csv(embed_path+'RO_embedding_GEMSEC.csv')
 
 ### Loading GEMSEC With Regularization features
 X_HR_GEMSECWithRegul = pd.read_csv(embed_path+'HR_GEMSECWithRegularization_embedding.csv')
-# X_HU_GEMSECWithRegul = pd.read_csv(embed_path+'HU_GEMSECWithRegularization_embedding.csv')
-# X_RO_GEMSECWithRegul = pd.read_csv(embed_path+'RO_GEMSECWithRegularization_embedding.csv')
+X_HU_GEMSECWithRegul = pd.read_csv(embed_path+'HU_GEMSECWithRegularization_embedding.csv')
+X_RO_GEMSECWithRegul = pd.read_csv(embed_path+'RO_GEMSECWithRegularization_embedding.csv')
 
 ### Loading DeepWalk features
 X_HR_DeepWalk = pd.read_csv(embed_path+'HR_DeepWalk_embedding.csv')
-# X_HU_DeepWalk = pd.read_csv(embed_path+'HU_DeepWalk_embedding.csv')
-# X_RO_DeepWalk = pd.read_csv(embed_path+'RO_DeepWalk_embedding.csv')
+X_HU_DeepWalk = pd.read_csv(embed_path+'HU_DeepWalk_embedding.csv')
+X_RO_DeepWalk = pd.read_csv(embed_path+'RO_embedding_DW.csv')
 
 ### Loading DeepWalk With Regularization features
 X_HR_DeepWalkWithRegularization = pd.read_csv(embed_path+'HR_DeepWalkWithRegularization_embedding.csv')
-# X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegularization_embedding.csv')
-# X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_DeepWalkWithRegularization_embedding.csv')
+X_HU_DeepWalkWithRegularization = pd.read_csv(embed_path+'HU_DeepWalkWithRegularization_embedding.csv')
+X_RO_DeepWalkWithRegularization = pd.read_csv(embed_path+'RO_embedding_DWR.csv')
 
 ### Loading Node2vec features
 X_HR_n2v = pd.read_csv(embed_path+'HR_node2vec_embedding.csv')
-# X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
-# X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
+X_HU_n2v = pd.read_csv(embed_path+'HU_node2vec_embedding.csv')
+X_RO_n2v = pd.read_csv(embed_path+'RO_node2vec_embedding.csv')
+
+### Loading LaplacianEigenvectors features
+X_HR_LapEig = pd.DataFrame(np.load(open(embed_path+'HR_LaplacianEigenmaps_embedding.npy', 'rb')))
+X_HU_LapEig = pd.DataFrame(np.load(open(embed_path+'HU_LaplacianEigenmaps_embedding.npy', 'rb')))
+X_RO_LapEig = pd.DataFrame(np.load(open(embed_path+'RO_LaplacianEigenmaps_embedding.npy', 'rb')))
+
+### Loading MNMF features
+X_HR_MNMF = pd.DataFrame(np.load(open(embed_path+'HR_MNMF_embedding.npy', 'rb')))
+X_HU_MNMF = pd.DataFrame(np.load(open(embed_path+'HU_MNMF_embedding.npy', 'rb')))
+X_RO_MNMF = pd.DataFrame(np.load(open(embed_path+'RO_MNMF_embedding.npy', 'rb')))
+
+### Loading Walklets features -> Give 64 dimensions for the embeddings OUT
+# X_HR_Walklets = pd.DataFrame(np.load(open(embed_path+'HR_Walklets_embedding.npy', 'rb')))
+# X_HU_Walklets = pd.DataFrame(np.load(open(embed_path+'HU_Walklets_embedding.npy', 'rb')))
+# X_RO_Walklets = pd.DataFrame(np.load(open(embed_path+'RO_Walklets_embedding.npy', 'rb')))
+
+### Loading DANMF features
+X_HR_DANMF = pd.DataFrame(np.load(open(embed_path+'HR_DANMF_embedding.npy', 'rb')))
+X_HU_DANMF = pd.DataFrame(np.load(open(embed_path+'HU_DANMF_embedding.npy', 'rb')))
+X_RO_DANMF = pd.DataFrame(np.load(open(embed_path+'RO_DANMF_embedding.npy', 'rb')))
 
 ### Loading labels 
 y_HR = create_dataframe_unsorted(data_HR, columns)
-# y_HU = create_dataframe_unsorted(data_HU, columns)
-# y_RO = create_dataframe_unsorted(data_RO, columns)
-list_target = [y_HR]#, y_HU, y_RO]
+y_HU = create_dataframe_unsorted(data_HU, columns)
+y_RO = create_dataframe_unsorted(data_RO, columns)
+list_target = [y_HR, y_HU, y_RO]
 
 ### Initalizing the parameters for the models comparison
 
 embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
                  'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization,
-                 'Node2Vec': X_HR_n2v}
-# embeddings_HU = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
-# embeddings_RO = {'Numero 1': X_HR, 'Numero 2': X_HR, 'Numero 3': X_HR}
-list_embed = [embeddings_HR] #, embeddings_HU, embeddings_RO]
+                 'Node2Vec': X_HR_n2v, 'Laplacian_Eigenmaps': X_HR_LapEig, 'MNMF': X_HR_MNMF,
+                 'DANMF': X_HR_DANMF}
+embeddings_HU = {'GEMSEC': X_HU_GEMSEC, 'GEMSEC With Regularization': X_HU_GEMSECWithRegul,
+                 'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization,
+                 'Node2Vec': X_HU_n2v, 'Laplacian_Eigenmaps': X_HU_LapEig, 'MNMF': X_HU_MNMF,
+                 'DANMF': X_HU_DANMF}
+embeddings_RO = {'GEMSEC': X_RO_GEMSEC, 'GEMSEC With Regularization': X_RO_GEMSECWithRegul,
+                 'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization,
+                 'Node2Vec': X_RO_n2v, 'Laplacian_Eigenmaps': X_RO_LapEig, 'MNMF': X_RO_MNMF,
+                 'DANMF': X_RO_DANMF}
+list_embed = [embeddings_HR, embeddings_HU, embeddings_RO]
 
 embed_y = list(zip(list_embed, list_target))
 
@@ -220,11 +249,12 @@ embed_y = list(zip(list_embed, list_target))
 weak_model_lg = LogisticRegression(n_jobs=-1)
 weak_model_xgb = xgb.XGBClassifier()
 
-meta_model_cc_lg = ClassifierChain(weak_model_lg)
-meta_model_cc_xgb = ClassifierChain(weak_model_xgb)
+# meta_model_cc_lg = ClassifierChain(weak_model_lg)
+# meta_model_cc_xgb = ClassifierChain(weak_model_xgb)
 meta_model_ovr_lg = OneVsRestClassifier(weak_model_lg, n_jobs=-1)
 meta_model_ovr_xgb = OneVsRestClassifier(weak_model_xgb, n_jobs=-1)
-list_models = [meta_model_cc_lg, meta_model_cc_xgb, meta_model_ovr_lg, meta_model_ovr_xgb]
+# list_models = [meta_model_cc_lg, meta_model_cc_xgb, meta_model_ovr_lg, meta_model_ovr_xgb]
+list_models = [meta_model_ovr_lg, meta_model_ovr_xgb]
 
 # Parameters for the gridsearch
 params_cc_lg = {'base_estimator__C': [0.1, 1, 10]}
@@ -248,14 +278,15 @@ def run(list_data, model_params, gridsearch, full_train, most_popular, filename=
         cntry = country[i]
         i += 1
         for model, param in models_params:
-            meta_model = clean_type(model)
+            mdl = sklearn.base.clone(model)
+            meta_model = clean_type(mdl)
             try:
-                weak_model = clean_type(model.estimator)
+                weak_model = clean_type(mdl.estimator)
             except AttributeError:
-                weak_model = clean_type(model.base_estimator)
+                weak_model = clean_type(mdl.base_estimator)
                 
             print('##### Country: ' + cntry + ' | Meta model: ' + meta_model + ' | Weak model: ' + weak_model + ' #####')
-            r_train, r_test = compare_embeddings(embeddings=X, y=y, model=model, 
+            r_train, r_test = compare_embeddings(embeddings=X, y=y, model=mdl, 
                                      gridsearch=gridsearch, params=param, full_train=full_train,
                                      most_popular=most_popular)
             print('')
