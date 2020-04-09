@@ -60,7 +60,7 @@ def embed(model, g, cntry):
 cntry = ['HR', 'HU', 'RO']
 datasets = [g_HR, g_HU, g_RO]
 data = list(zip(cntry, datasets))
-models = [kc.MNMF(dimensions=16)] #, kc.Walklets(dimensions=16), kc.DANMF(layers=[32,8]), kc.LaplacianEigenmaps(dimensions=16)#,kc.Walklets(dimensions=16),kc.MNMF(dimensions=16)] 
+models = [kc.Diff2Vec(dimensions=16)] #kc.MNMF(dimensions=16), kc.Walklets(dimensions=16), kc.DANMF(layers=[32,8]), kc.LaplacianEigenmaps(dimensions=16)#,kc.Walklets(dimensions=16),kc.MNMF(dimensions=16)] 
 
 for cntry, grph in data:
     for model in models:

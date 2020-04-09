@@ -204,10 +204,10 @@ X_HR_LapEig = pd.DataFrame(np.load(open(embed_path+'HR_LaplacianEigenmaps_embedd
 X_HU_LapEig = pd.DataFrame(np.load(open(embed_path+'HU_LaplacianEigenmaps_embedding.npy', 'rb')))
 X_RO_LapEig = pd.DataFrame(np.load(open(embed_path+'RO_LaplacianEigenmaps_embedding.npy', 'rb')))
 
-### Loading Walklets features
-X_HR_Walklets = pd.DataFrame(np.load(open(embed_path+'HR_Walklets_embedding.npy', 'rb')))
-X_HU_Walklets = pd.DataFrame(np.load(open(embed_path+'HU_Walklets_embedding.npy', 'rb')))
-X_RO_Walklets = pd.DataFrame(np.load(open(embed_path+'RO_Walklets_embedding.npy', 'rb')))
+### Loading Walklets features -> Give 64 dimensions for the embeddings OUT
+# X_HR_Walklets = pd.DataFrame(np.load(open(embed_path+'HR_Walklets_embedding.npy', 'rb')))
+# X_HU_Walklets = pd.DataFrame(np.load(open(embed_path+'HU_Walklets_embedding.npy', 'rb')))
+# X_RO_Walklets = pd.DataFrame(np.load(open(embed_path+'RO_Walklets_embedding.npy', 'rb')))
 
 ### Loading DANMF features
 X_HR_DANMF = pd.DataFrame(np.load(open(embed_path+'HR_DANMF_embedding.npy', 'rb')))
@@ -224,15 +224,15 @@ list_target = [y_HR, y_HU, y_RO]
 
 embeddings_HR = {'GEMSEC': X_HR_GEMSEC, 'GEMSEC With Regularization': X_HR_GEMSECWithRegul,
                  'DeepWalk': X_HR_DeepWalk, 'DeepWalk With Regularization': X_HR_DeepWalkWithRegularization,
-                 'Node2Vec': X_HR_n2v, 'Walklets': X_HR_Walklets, 'Laplacian_Eigenmaps': X_HR_LapEig,
+                 'Node2Vec': X_HR_n2v, 'Laplacian_Eigenmaps': X_HR_LapEig,
                  'DANMF': X_HR_DANMF}
 embeddings_HU = {'GEMSEC': X_HU_GEMSEC, 'GEMSEC With Regularization': X_HU_GEMSECWithRegul,
                  'DeepWalk': X_HU_DeepWalk, 'DeepWalk With Regularization': X_HU_DeepWalkWithRegularization,
-                 'Node2Vec': X_HU_n2v, 'Walklets': X_HU_Walklets, 'Laplacian_Eigenmaps': X_HU_LapEig,
+                 'Node2Vec': X_HU_n2v, 'Laplacian_Eigenmaps': X_HU_LapEig,
                  'DANMF': X_HU_DANMF}
 embeddings_RO = {'GEMSEC': X_RO_GEMSEC, 'GEMSEC With Regularization': X_RO_GEMSECWithRegul,
                  'DeepWalk': X_RO_DeepWalk, 'DeepWalk With Regularization': X_RO_DeepWalkWithRegularization,
-                 'Node2Vec': X_RO_n2v, 'Walklets': X_RO_Walklets, 'Laplacian_Eigenmaps': X_RO_LapEig,
+                 'Node2Vec': X_RO_n2v, 'Laplacian_Eigenmaps': X_RO_LapEig,
                  'DANMF': X_RO_DANMF}
 list_embed = [embeddings_HR, embeddings_HU, embeddings_RO]
 
