@@ -249,19 +249,19 @@ embed_y = list(zip(list_embed, list_target))
 weak_model_lg = LogisticRegression(n_jobs=-1)
 weak_model_xgb = xgb.XGBClassifier()
 
-# meta_model_cc_lg = ClassifierChain(weak_model_lg)
-# meta_model_cc_xgb = ClassifierChain(weak_model_xgb)
-meta_model_ovr_lg = OneVsRestClassifier(weak_model_lg, n_jobs=-1)
-meta_model_ovr_xgb = OneVsRestClassifier(weak_model_xgb, n_jobs=-1)
+meta_model_cc_lg = ClassifierChain(weak_model_lg)
+meta_model_cc_xgb = ClassifierChain(weak_model_xgb)
+# meta_model_ovr_lg = OneVsRestClassifier(weak_model_lg, n_jobs=-1)
+# meta_model_ovr_xgb = OneVsRestClassifier(weak_model_xgb, n_jobs=-1)
 # list_models = [meta_model_cc_lg, meta_model_cc_xgb, meta_model_ovr_lg, meta_model_ovr_xgb]
-list_models = [meta_model_ovr_lg, meta_model_ovr_xgb]
+list_models = [meta_model_cc_lg, meta_model_cc_xgb]
 
 # Parameters for the gridsearch
 params_cc_lg = {'base_estimator__C': [0.1, 1, 10]}
 params_cc_xbg = {'base_estimator__learning_rate': [0.1, 0.01]}
-params_ovr_lg = {'estimator__C': [0.1, 1, 10]}
+params_ovr_lg = {'estimator__C': [0.1, 1, 5, 10]}
 params_ovr_xgb = {'estimator__learning_rate': [0.1, 0.01]}
-list_params = [params_cc_lg, params_cc_xbg, params_ovr_lg, params_ovr_xgb]
+list_params = [params_ovr_lg, params_cc_lg, params_cc_xbg, params_ovr_lg, params_ovr_xgb]
 
 models_params = list(zip(list_models, list_params))
 

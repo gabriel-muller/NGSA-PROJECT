@@ -1,0 +1,9 @@
+;macro;micro;weighted
+GEMSEC;20.01%;41.52%;43.62%
+GEMSEC With Regularization;19.43%;41.78%;43.38%
+DeepWalk;20.10%;42.27%;44.05%
+DeepWalk With Regularization;19.40%;41.05%;43.66%
+Node2Vec;3.89%;32.90%;17.70%
+Laplacian_Eigenmaps;16.70%;41.98%;42.62%
+MNMF;18.36%;41.62%;43.37%
+DANMF;17.69%;42.08%;43.37%
